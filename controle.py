@@ -3,8 +3,8 @@ import pyodbc
 
 server = 'localhost\\SQLEXPRESS'  # Nome do servidor (inclui o nome da instância)
 database = 'cadastro'             # Nome do banco de dados
-username = 'cadastropublic'                 # Usuário (ex: sa, se estiver usando autenticação do SQL Server)
-password = 'cadastro123'                      # Senha
+username = 'gustavo'                 # Usuário (ex: sa, se estiver usando autenticação do SQL Server)
+password = '000gustavo'                      # Senha
 
 def funcao_principal():
 
@@ -24,7 +24,7 @@ def funcao_principal():
     
     # Insere as informações no banco de dados
     try:
-        comando_SQL = "INSERT INTO produtos (codigo, descricao, preco, categoria) VALUES (?, ?, ?, ?)"
+        comando_SQL = "exec SP_adicionar_produtos ?, ?, ?, ?"
         dados = (int(textoCampoCodigo), textoCampoDescricao, float(textoCampoPreco), categoria)
         cursor.execute(comando_SQL, dados)
         conn.commit()
