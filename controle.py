@@ -6,12 +6,13 @@ database = 'cadastro'             # Nome do banco de dados
 username = 'gustavo'                 # Usuário (ex: sa, se estiver usando autenticação do SQL Server)
 password = '000gustavo'                      # Senha
 
-def funcao_principal():
+def salvar_dados():
 
     # Lê o texto dentro dos campos e armazena nas variaveis
     textoCampoCodigo = formulario.campoCodigo.text()
     textoCampoDescricao = formulario.campoDescricao.text()
     textoCampoPreco = formulario.campoPreco.text()
+    textoCampoPreco =  float(textoCampoPreco.replace(",", '.'))
     categoria = ""
     
     if formulario.opcaoInformatica.isChecked():
@@ -28,10 +29,40 @@ def funcao_principal():
         dados = (int(textoCampoCodigo), textoCampoDescricao, float(textoCampoPreco), categoria)
         cursor.execute(comando_SQL, dados)
         conn.commit()
+        
     except pyodbc.Error as e:
         print("Erro ao inserir produto:", e)
+        
+    formulario.campoCodigo.setText("")
+    formulario.campoDescricao.setText("")
+    formulario.campoPreco.setText("")
 
-
+def listar_dados():
+    lista_de_dados.show()
+    formulario.close()
+    
+    
+    #Lendo os dados da tabela
+    comando_SQL = "SELECT * FROM produtos"
+    cursor.execute(comando_SQL)
+    dados_lidos = cursor.fetchall()
+    
+    lista_de_dados.tabela.setRowCount(len(dados_lidos))
+    lista_de_dados.tabela.setColumnCount(5)
+    lista_de_dados.tabela.setEditTriggers(lista_de_dados.tabela.NoEditTriggers)
+    
+    for i in range(0, len(dados_lidos)):
+        for j in range(0, 5):
+            lista_de_dados.tabela.setItem(i, j, QtWidgets.QTableWidgetItem(str(dados_lidos[i][j])))
+    
+    
+    lista_de_dados.botaoVoltar.clicked.connect(voltar_telaCadastro)
+        
+    
+def voltar_telaCadastro():
+        formulario.show()
+        lista_de_dados.close()
+        
 try:
     conn = pyodbc.connect(
         f"DRIVER={{ODBC Driver 18 for SQL Server}};"
@@ -48,9 +79,11 @@ try:
     cursor.execute("IF NOT EXISTS(SELECT * from sysobjects where name = 'produtos' AND xtype = 'U') BEGIN CREATE TABLE produtos (id INT IDENTITY(1,1) PRIMARY KEY,codigo INT NOT NULL,descricao TEXT NOT NULL,preco DECIMAL(10,2) NOT NULL,categoria VARCHAR(20) NOT NULL)END")
     app = QtWidgets.QApplication([])
     formulario = uic.loadUi("formulario.ui")
-    formulario.botaoSalvar.clicked.connect(funcao_principal)
-
+    lista_de_dados = uic.loadUi("listar_dados.ui")
+    formulario.botaoSalvar.clicked.connect(salvar_dados)
+    formulario.botaoListar.clicked.connect(listar_dados)
     formulario.show()
+    
     app.exec()
 
 except pyodbc.Error as e:
