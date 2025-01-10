@@ -275,9 +275,9 @@ try:
     app = QtWidgets.QApplication([])
     app.setWindowIcon(QtGui.QIcon("icons/icon_main.png"))
     
-    formulario = uic.loadUi("formulario.ui")
-    lista_de_dados = uic.loadUi("listar_dados.ui")
-    menu_editar = uic.loadUi("edita_dados.ui")
+    formulario = uic.loadUi("views/formulario.ui")
+    lista_de_dados = uic.loadUi("views/listar_dados.ui")
+    menu_editar = uic.loadUi("views/edita_dados.ui")
     formulario.setWindowTitle("Cadastrar Produtos")
     lista_de_dados.setWindowTitle("Lista de Produtos")
     formulario.botaoSalvar.clicked.connect(salvar_dados)

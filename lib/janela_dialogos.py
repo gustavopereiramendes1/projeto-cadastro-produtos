@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QApplication, QDialog, QVBoxLayout, QHBoxLayout, QLa
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtCore import Qt
 import sys
-import winsound  # Biblioteca para sons do sistema no Windows
+import winsound 
 
 
 class SuccessDialog(QDialog):
@@ -10,7 +10,7 @@ class SuccessDialog(QDialog):
         super().__init__()
         self.setWindowTitle("Salvo")
         self.setFixedSize(200, 150)  # Tamanho fixo da janela
-        self.setWindowIcon(QIcon("icons/icon_Sucesso.png"))  # Ícone da janela de sucesso
+        self.setWindowIcon(QIcon("icons/icon_Sucesso.png")) 
 
         # Reproduzir o som de sucesso do sistema
         winsound.MessageBeep(winsound.MB_ICONASTERISK)
@@ -117,11 +117,3 @@ def exibir_sucesso(parent, mensagem):
 def exibir_erro(parent, mensagem):
     erro = ErrorDialog(mensagem)
     erro.exec_()  # Mostra a janela como modal
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-
-    # Criar e exibir a janela de sucesso
-    exibir_sucesso(None, "A operação foi realizada com sucesso!")
-
-    sys.exit(app.exec_())
