@@ -103,18 +103,37 @@ def gerar_pdf(dados):
     exibir_sucesso(lista_de_dados, "Salvo com Sucesso!")
 
 def atualizar_lista(dados_lidos):
-    
-    
-    #Criando a tabela de dados
-    lista_de_dados.tabela.setRowCount(len(dados_lidos))
-    lista_de_dados.tabela.setColumnCount(5)
-    lista_de_dados.tabela.setEditTriggers(lista_de_dados.tabela.NoEditTriggers)
-    
-    #Inserindo os dados na tabela da janela
-    for i in range(0, len(dados_lidos)):
-        for j in range(0, 5):
-            lista_de_dados.tabela.setItem(i, j, QtWidgets.QTableWidgetItem(str(dados_lidos[i][j])))
+    """
+    Atualiza a tabela QTableWidget com os dados fornecidos.
 
+    Args:
+        dados_lidos (list): Lista de dados a serem exibidos na tabela. 
+                            Cada elemento deve ser uma lista com valores correspondentes às colunas.
+    """
+    # Configura o número de linhas e colunas da tabela
+    lista_de_dados.tabela.setRowCount(len(dados_lidos))  # Define a quantidade de linhas
+    lista_de_dados.tabela.setColumnCount(5)  # Define a quantidade de colunas (ajuste conforme necessário)
+
+    # Define a tabela como somente leitura
+    lista_de_dados.tabela.setEditTriggers(QtWidgets.QTableWidget.NoEditTriggers)
+
+    lista_de_dados.tabela.setColumnWidth(0, 30)
+    lista_de_dados.tabela.setColumnWidth(1, 50)
+    lista_de_dados.tabela.setColumnWidth(2, 150)
+    lista_de_dados.tabela.setColumnWidth(3, 90)
+    lista_de_dados.tabela.setColumnWidth(4, 90)
+    
+    # Insere os dados na tabela
+    for i, linha in enumerate(dados_lidos):
+        for j, valor in enumerate(linha):
+            # Verifica se o índice da coluna está dentro do limite
+            if j < 5:  # Ajuste o limite se o número de colunas mudar
+                item = QtWidgets.QTableWidgetItem(str(valor))  # Cria um item de tabela
+                item.setTextAlignment(Qt.AlignCenter)  # Alinha o texto ao centro (opcional)
+                lista_de_dados.tabela.setItem(i, j, item)  # Insere o item na posição correta
+
+def filtro_ordenar(dados_lidos):
+    print("Ordenação")
     
 def excluir_dados(dados_tabela = []):
     linha = None
@@ -191,7 +210,7 @@ def editar_dados(valor_id_dado=-1):
         comando_SQL = "SELECT * FROM produtos"
         cursor.execute(comando_SQL)
         dados_lidos = cursor.fetchall()
-        atualizar_lista(dados_lidos)
+        filtrar_dados(dados_lidos)
         
         return
     except ValueError:
