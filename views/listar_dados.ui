@@ -221,7 +221,7 @@ color: rgb(255, 255, 255);</string>
      <string>Pesquisar</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="filtroId">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -234,7 +234,7 @@ color: rgb(255, 255, 255);</string>
      <string>ID</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="filtroCodigo">
     <property name="geometry">
      <rect>
       <x>70</x>
@@ -247,7 +247,7 @@ color: rgb(255, 255, 255);</string>
      <string>Código</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="filtroDescricao">
     <property name="geometry">
      <rect>
       <x>120</x>
@@ -260,7 +260,7 @@ color: rgb(255, 255, 255);</string>
      <string>Descrição</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="filtroPreco">
     <property name="geometry">
      <rect>
       <x>270</x>
@@ -273,7 +273,7 @@ color: rgb(255, 255, 255);</string>
      <string>Preço</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_5">
+   <widget class="QPushButton" name="filtroCategoria">
     <property name="geometry">
      <rect>
       <x>360</x>

@@ -132,8 +132,24 @@ def atualizar_lista(dados_lidos):
                 item.setTextAlignment(Qt.AlignCenter)  # Alinha o texto ao centro (opcional)
                 lista_de_dados.tabela.setItem(i, j, item)  # Insere o item na posição correta
 
-def filtro_ordenar(dados_lidos):
-    print("Ordenação")
+def filtro_ordenar(lista_de_dados=[], tipo="id"):
+    global ordem_atual
+    try:
+        # Define a direção da ordenação com base no estado atual
+        direcao = "DESC" if ordem_atual.get("direcao", "ASC") == "ASC"  and ordem_atual.get("coluna") == tipo else "ASC"
+        comando_SQL = f"SELECT * FROM produtos ORDER BY {tipo} {direcao}"
+        cursor.execute(comando_SQL)
+        dados_ordenados = cursor.fetchall()
+        
+        atualizar_lista(dados_ordenados)
+        ordem_atual["coluna"] = tipo  # Armazena a última coluna usada para ordenação
+        ordem_atual["direcao"] = direcao
+    
+    except Exception as e:
+        exibir_erro(lista_de_dados, "Erro ao ordenar")
+
+# Inicializando a variável global para armazenar o estado de ordenação
+ordem_atual = {}
     
 def excluir_dados(dados_tabela = []):
     linha = None
@@ -272,6 +288,32 @@ def listar_dados():
     except TypeError:
         pass
     lista_de_dados.campoPesquisar.textChanged.connect(lambda: filtrar_dados(dados_lidos))
+    
+    try:
+        lista_de_dados.filtroId.clicked.disconnect()
+    except TypeError:
+        pass
+    lista_de_dados.filtroId.clicked.connect(lambda: filtro_ordenar(dados_lidos,"id"))
+    
+    try:
+        lista_de_dados.filtroCodigo.clicked.disconnect()
+    except TypeError:
+        lista_de_dados.filtroCodigo.clicked.connect(lambda: filtro_ordenar(dados_lidos,"codigo"))
+    try:
+        lista_de_dados.filtroDescricao.clicked.disconnect()
+    except TypeError:
+        pass
+    lista_de_dados.filtroDescricao.clicked.connect(lambda: filtro_ordenar(dados_lidos,"descricao"))
+    try:
+        lista_de_dados.filtroPreco.clicked.disconnect()
+    except TypeError:
+        pass
+    lista_de_dados.filtroPreco.clicked.connect(lambda: filtro_ordenar(dados_lidos,"preco"))
+    try:
+        lista_de_dados.filtroCategoria.clicked.disconnect()
+    except TypeError:
+        pass
+    lista_de_dados.filtroCategoria.clicked.connect(lambda: filtro_ordenar(dados_lidos,"categoria"))
         
     
 def voltar_telaCadastro():
@@ -301,6 +343,8 @@ try:
     lista_de_dados.setWindowTitle("Lista de Produtos")
     formulario.botaoSalvar.clicked.connect(salvar_dados)
     formulario.botaoListar.clicked.connect(listar_dados)
+    
+    
     
     formulario.show()
     
